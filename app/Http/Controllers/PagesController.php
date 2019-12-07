@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class PagesController extends Controller
 {
@@ -47,11 +48,13 @@ class PagesController extends Controller
 
         $passwordCheck = Hash::check($request->password, $user->password);
 
-        if($passwordCheck){
-
+        if($passwordCheck)
+        {
+            $request->session()->put('user_id', $user->id);
             echo "true";
-
-        }else{
+        }
+        else
+        {
             echo "false";
         }
     }
@@ -59,6 +62,37 @@ class PagesController extends Controller
     public function welcome()
     {
         return view('welcome');
+    }
+
+    public function edit(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'  => 'required|max:8',
+            'email' => 'required|email|unique:users,email',
+        ]);
+
+        if ($validator->fails()) {
+            return json_encode(['status' => false ,'erorr' => implode(',' , $validator->messages()->all())]);
+
+         }
+
+        $id = $request->session()->get('user_id');
+
+        $user =  User::where('id', '=', $id)->first();
+
+        $input=$request->all(['name', 'email']);
+        $user->fill($input);
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+        return json_encode([
+            "status"=>"true",
+        ]);
+    }
+
+    public function editForm()
+    {
+        return view('edit');
     }
 }
 

@@ -21,4 +21,5 @@ Route::post('/login', 'PagesController@login');
 Route::get('/welcome', 'PagesController@welcome');
 
 Route::post('/login-hash', 'PagesController@loginHash');
-
+Route::get('/edit', 'PagesController@editForm');
+Route::post('/edit', 'PagesController@edit');

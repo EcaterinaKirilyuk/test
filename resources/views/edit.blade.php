@@ -73,16 +73,18 @@
 
 <body>
 
-    <h2>Login Form</h2>
+    <h2>Edit Account Form</h2>
 
-    <form  id="login">
+    <form  id="edit">
         <div class="container">
             <label for="uname"><b>Username</b></label>
             <input type="text" placeholder="Enter Username" name="name" required>
+            <label for="uname"><b>Email</b></label>
             <input type="email" placeholder="Enter Email" name="email" required>
+            <label for="uname"><b>Password</b></label>
             <input type="password" placeholder="Enter Password" name="password" required>
 
-            <button type="button"  id='send'>Login</button>
+            <button type="button"  id='send'>Save</button>
 
         </div>
 
@@ -100,16 +102,16 @@
 
 $('#send').click(function(){
         $.ajax({
-        url: 'login-hash',
+        url: 'edit',
         type: 'POST',
         dataType: 'json',
-        data:  $('#login' ).serialize(),
-        success: function(res){
-            console.log(res);
-            if(res){
-                window.location.href = "/edit";
+        data:  $('#edit' ).serialize(),
+        success: function(response){
+            console.log(response);
+            if(response.status){
+                window.location.href = "/welcome";
             }else{
-                alert('Not Fond');
+                alert(response.erorr);
             }
 
         }
