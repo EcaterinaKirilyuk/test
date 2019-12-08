@@ -111,7 +111,7 @@ $('#send').click(function(){
             if(response.status){
                 window.location.href = "/welcome";
             }else{
-                alert(response.erorr);
+                alert(response.error);
             }
 
         }

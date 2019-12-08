@@ -104,12 +104,15 @@ $('#send').click(function(){
         type: 'POST',
         dataType: 'json',
         data:  $('#login' ).serialize(),
-        success: function(res){
-            console.log(res);
-            if(res){
+        success: function(response){
+
+            if(response.status)
+            {
                 window.location.href = "/edit";
-            }else{
-                alert('Not Fond');
+            }
+            else
+            {
+                alert(response.error);
             }
 
         }
